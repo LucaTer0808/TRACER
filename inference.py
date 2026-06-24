@@ -50,7 +50,7 @@ class Inference():
 
         with torch.no_grad():
             for i, (images, original_size, image_name) in enumerate(tqdm(self.test_loader)):
-                print(f'Processing image {i + 1}/{len(self.test_loader)}: {image_name[0]}')
+                print(f'Processing batch {i + 1}/{len(self.test_loader)} => image {32 * i + 1} to {32 * (i + 1)} being processed')
                 images = torch.tensor(images, device=self.device, dtype=torch.float32)
 
                 outputs, edge_mask, ds_map = self.model(images)
