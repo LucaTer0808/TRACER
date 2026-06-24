@@ -48,8 +48,13 @@ def main(args):
         save_path = os.path.join(args.model_path, args.dataset, f'TE{args.arch}_{str(args.exp_num)}')
 
         print('<----- Initializing inference mode ----->')
-        Inference(args, save_path).test()
+        total_time, images_processed, time_per_image = Inference(args, save_path).test()
 
+        eval_path = os.path.join(save_path, 'evaluation.txt')
+        with open(eval_path, 'a') as f:
+            f.write(f'Total time: {total_time:.4f}s')
+            f.write(f'Images processed: {images_processed}')
+            f.write(f'Time per image: {time_per_image:.4f}s')
 
 if __name__ == '__main__':
     main(args)

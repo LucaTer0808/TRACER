@@ -45,10 +45,12 @@ class Inference():
 
     def test(self):
         self.model.eval()
-        t = time.time()
+        torch.cuda.synchronize()
+        start_time = time.time()
 
         with torch.no_grad():
             for i, (images, original_size, image_name) in enumerate(tqdm(self.test_loader)):
+                print(f'Processing image {i + 1}/{len(self.test_loader)}: {image_name[0]}')
                 images = torch.tensor(images, device=self.device, dtype=torch.float32)
 
                 outputs, edge_mask, ds_map = self.model(images)
@@ -65,8 +67,14 @@ class Inference():
                         salient_object = self.post_processing(images[i], output, h, w)
                         cv2.imwrite(os.path.join('mask', self.args.dataset, image_name[i] + '.png'), output)
                         cv2.imwrite(os.path.join('object', self.args.dataset, image_name[i] + '.png'), salient_object)
+        
+        torch.cuda.synchronize()
+        end_time = time.time()
+        total_time = end_time - start_time
+        images_processed = len(self.test_loader.dataset)
+        time_per_image = total_time / images_processed if images_processed > 0 else 0
 
-        print(f'time: {time.time() - t:.3f}s')
+        return total_time, images_processed, time_per_image
 
     def post_processing(self, original_image, output_image, height, width, threshold=200):
         invTrans = transforms.Compose([transforms.Normalize(mean=[0., 0., 0.],
