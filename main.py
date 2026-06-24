@@ -50,7 +50,7 @@ def main(args):
         print('<----- Initializing inference mode ----->')
         total_time, images_processed, time_per_image = Inference(args, save_path).test()
 
-        eval_path = os.path.join(save_path, 'evaluation.txt')
+        eval_path = os.path.join('/scratch/tmp/lterfehr/models/TRACER/mask/dataset', 'evaluation.txt')
         with open(eval_path, 'w') as f:
             f.write(f'Total time: {total_time:.4f}s')
             f.write(f'Images processed: {images_processed}')

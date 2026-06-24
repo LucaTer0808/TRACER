@@ -41,7 +41,6 @@ class Inference():
 
         if args.save_map is not None:
             os.makedirs(os.path.join('mask', self.args.dataset), exist_ok=True)
-            os.makedirs(os.path.join('object', self.args.dataset), exist_ok=True)
 
     def test(self):
         self.model.eval()
@@ -63,10 +62,7 @@ class Inference():
                     # Save prediction map
                     if self.args.save_map is not None:
                         output = (output.squeeze().detach().cpu().numpy() * 255.0).astype(np.uint8)
-
-                        salient_object = self.post_processing(images[i], output, h, w)
                         cv2.imwrite(os.path.join('mask', self.args.dataset, image_name[i] + '.png'), output)
-                        cv2.imwrite(os.path.join('object', self.args.dataset, image_name[i] + '.png'), salient_object)
         
         torch.cuda.synchronize()
         end_time = time.time()
