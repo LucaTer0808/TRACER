@@ -52,9 +52,9 @@ def main(args):
 
         eval_path = os.path.join('/scratch/tmp/lterfehr/models/TRACER/mask/dataset', 'evaluation.txt')
         with open(eval_path, 'w') as f:
-            f.write(f'Total time: {total_time:.4f}s')
-            f.write(f'Images processed: {images_processed}')
-            f.write(f'Time per image: {time_per_image:.4f}s')
+            f.write(f'Total time: {total_time:.4f}s\n')
+            f.write(f'Images processed: {images_processed}\n')
+            f.write(f'Time per image: {time_per_image:.4f}s\n')
 
 if __name__ == '__main__':
     main(args)
